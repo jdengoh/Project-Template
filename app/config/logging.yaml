@@ -1,0 +1,26 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  simple:
+    format: "%(name)s:\t%(message)s"
+
+handlers:
+  console:
+    (): rich.logging.RichHandler
+    level: INFO
+    formatter: simple
+    markup: false
+    rich_tracebacks: true
+
+loggers:
+  app: { level: INFO }
+  # Route uvicorn's loggers through the root console handler instead of
+  # uvicorn's own default handlers.
+  uvicorn: { level: INFO, propagate: true }
+  uvicorn.error: { level: INFO, propagate: true }
+  uvicorn.access: { level: WARNING, propagate: true }
+
+root:
+  level: INFO
+  handlers: [console]

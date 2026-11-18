@@ -1,0 +1,26 @@
+name: Lint Markdown
+
+on:
+  pull_request:
+    branches:
+      - main
+      - staging
+    paths:
+      - "**/*.md"
+      - ".markdownlint.jsonc"
+
+jobs:
+  lint-markdown:
+    name: Check for Markdown Linting Errors
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Run Markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v20
+        with:
+          config: .markdownlint.jsonc
+          globs: |
+            **/*.md
+            !data/

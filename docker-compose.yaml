@@ -1,0 +1,27 @@
+services:
+  my-project-template:
+    container_name: my-project-template
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - ENVIRONMENT=production
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - my-project-template-network
+
+networks:
+  my-project-template-network:
+    name: my-project-template-network
+    driver: bridge
